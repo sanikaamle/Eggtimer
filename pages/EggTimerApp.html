@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Egg Timer</title>
+    <link href='https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #ffffff;
+            font-family: 'Irish Grover', cursive;
+            overflow-x: hidden;
+            position: relative;
+            height: 100vh;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            height: 100vh;
+        }
+        
+        .title {
+            position: absolute;
+            top: 37px;
+            left: 28px;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 59px;
+            text-align: center;
+            color: #000000;
+            z-index: 10;
+        }
+        
+        .start-button {
+            position: absolute;
+            top: 101px;
+            left: 34px;
+            width: 187px;
+            height: 73px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+        
+        .start-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .start-button img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .egg-icon {
+            position: absolute;
+            right: 45px;
+            top: 134px;
+            display: flex;
+            z-index: 10;
+        }
+        
+        .egg-icon img:first-child {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .egg-icon img:last-child {
+            width: 35px;
+            height: 35px;
+            margin-left: 3px;
+            margin-top: 5px;
+        }
+        
+        .sky-background {
+            position: absolute;
+            top: 301px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 56px);
+            max-width: 1390px;
+            height: 704px;
+            background-color: rgba(239, 229, 94, 0.56);
+            overflow: hidden;
+            border-radius: 8px;
+            z-index: 1;
+        }
+        
+        .cloud {
+            position: absolute;
+            z-index: 2;
+        }
+        
+        .cloud-1 {
+            top: 38px;
+            left: 15px;
+            width: 355px;
+            height: 169px;
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        .cloud-2 {
+            top: 485px;
+            left: 178px;
+            width: 404px;
+            height: 193px;
+            animation: float 18s infinite ease-in-out 2s;
+        }
+        
+        .cloud-3 {
+            top: 52px;
+            left: 875px;
+            width: 504px;
+            height: 241px;
+            animation: float 20s infinite ease-in-out 1s;
+        }
+        
+        .cloud-4 {
+            top: 281px;
+            left: 0;
+            width: 417px;
+            height: 204px;
+            animation: float 17s infinite ease-in-out 3s;
+        }
+        
+        .cloud-5 {
+            top: 445px;
+            left: 901px;
+            width: 489px;
+            height: 233px;
+            animation: float 19s infinite ease-in-out 4s;
+        }
+        
+        .cloud-6 {
+            top: 293px;
+            left: 516px;
+            width: 515px;
+            height: 246px;
+            animation: float 16s infinite ease-in-out 2.5s;
+        }
+        
+        .cloud-7 {
+            top: 147px;
+            left: 370px;
+            width: 343px;
+            height: 164px;
+            animation: float 14s infinite ease-in-out 1.5s;
+        }
+        
+        .cloud-8 {
+            top: 0;
+            left: 393px;
+            width: 579px;
+            height: 160px;
+            animation: float 21s infinite ease-in-out 0.5s;
+        }
+        
+        .fried-egg {
+            position: absolute;
+            z-index: 3;
+            animation: bounce 5s infinite alternate ease-in-out;
+        }
+        
+        .egg-1 {
+            top: 173px;
+            left: 15px;
+            width: 145px;
+            height: 145px;
+            animation-delay: 0.2s;
+        }
+        
+        .egg-2 {
+            top: 246px;
+            left: 1152px;
+            width: 227px;
+            height: 227px;
+            animation-delay: 1.5s;
+        }
+        
+        .egg-3 {
+            top: 3px;
+            left: 1239px;
+            width: 97px;
+            height: 97px;
+            animation-delay: 0.8s;
+        }
+        
+        .egg-4 {
+            top: 128px;
+            left: 695px;
+            width: 166px;
+            height: 166px;
+            animation-delay: 1.2s;
+        }
+        
+        .egg-5 {
+            top: 805px;
+            left: 633px;
+            width: 235px;
+            height: 235px;
+            animation-delay: 0.5s;
+            z-index: 5;
+        }
+        
+        .egg-6 {
+            top: 767px;
+            left: 9px;
+            width: 212px;
+            height: 212px;
+            animation-delay: 1.8s;
+            z-index: 5;
+        }
+        
+        .timer-display {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 72px;
+            color: #000;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px 40px;
+            border-radius: 15px;
+            display: none;
+            z-index: 20;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounce {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .sky-background {
+                width: 90%;
+                left: 5%;
+            }
+            
+            .cloud, .fried-egg {
+                transform: scale(0.8);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 36px;
+                width: 100%;
+                text-align: center;
+                left: 0;
+            }
+            
+            .start-button {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .start-button:hover {
+                transform: translateX(-50%) scale(1.05);
+            }
+            
+            .egg-icon {
+                top: 80px;
+                right: 20px;
+            }
+            
+            .sky-background {
+                top: 200px;
+                height: 500px;
+            }
+            
+            .cloud, .fried-egg {
+                transform: scale(0.6);
+            }
+            
+            .timer-display {
+                font-size: 48px;
+                top: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h1 class='title'>EGG TIMER</h1>
+        
+        <a href="TimerSelection.html" class="start-button">
+            <img src="../assets/images/egg_1.svg" alt="Start">
+        </a>
+        
+        <div class='egg-icon'>
+            <img src='../assets/images/img_image_8.png' alt='Egg Icon'>
+            <img src='../assets/images/img_image_8.png' alt='Egg Icon'>
+        </div>
+        
+        <div class='timer-display' id='timerDisplay'>5:00</div>
+        
+        <div class='sky-background'>
+            <img src='../assets/images/img_cloud.png' alt='Cloud' class='cloud cloud-1'>
+            <img src='../assets/images/img_cloud.png' alt='Cloud' class='cloud cloud-2'>
+            <img src='../assets/images/img_cloud.png' alt='Cloud' class='cloud cloud-3'>
+            <img src='../assets/images/img_cloud_204x417.png' alt='Cloud' class='cloud cloud-4'>
+            <img src='../assets/images/img_cloud.png' alt='Cloud' class='cloud cloud-5'>
+            <img src='../assets/images/img_cloud.png' alt='Cloud' class='cloud cloud-6'>
+            <img src='../assets/images/img_cloud.png' alt='Cloud' class='cloud cloud-7'>
+            <img src='../assets/images/img_cloud_160x579.png' alt='Cloud' class='cloud cloud-8'>
+            
+            <img src='../assets/images/img_image_2.png' alt='Fried Egg' class='fried-egg egg-1'>
+            <img src='../assets/images/img_image_2.png' alt='Fried Egg' class='fried-egg egg-2'>
+            <img src='../assets/images/img_image_2.png' alt='Fried Egg' class='fried-egg egg-3'>
+            <img src='../assets/images/img_image_2.png' alt='Fried Egg' class='fried-egg egg-4'>
+        </div>
+        
+        <img src='../assets/images/img_image_2.png' alt='Fried Egg' class='fried-egg egg-5'>
+        <img src='../assets/images/img_image_2.png' alt='Fried Egg' class='fried-egg egg-6'>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.getElementById('startButton');
+            const timerDisplay = document.getElementById('timerDisplay');
+            let timerInterval;
+            let timeLeft = 300; // 5 minutes in seconds
+            let isTimerRunning = false;
+            
+            function updateTimerDisplay() {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }
+            
+            function startTimer() {
+                if (isTimerRunning) {
+                    // Pause timer
+                    clearInterval(timerInterval);
+                    isTimerRunning = false;
+                    startButton.querySelector('img').src = '/images/img_image_1.png'; // Change back to START
+                } else {
+                    // Start/resume timer
+                    timerDisplay.style.display = 'block';
+                    
+                    if (timeLeft <= 0) {
+                        timeLeft = 300; // Reset to 5 minutes if timer was completed
+                    }
+                    
+                    updateTimerDisplay();
+                    
+                    timerInterval = setInterval(function() {
+                        timeLeft--;
+                        updateTimerDisplay();
+                        
+                        if (timeLeft <= 0) {
+                            clearInterval(timerInterval);
+                            isTimerRunning = false;
+                            startButton.querySelector('img').src = '/images/img_image_1.png'; // Change back to START
+                            
+                            // Play alarm sound or notification
+                            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+                            audio.play();
+                            
+                            // Visual notification - make eggs bounce more vigorously
+                            const eggs = document.querySelectorAll('.fried-egg');
+                            eggs.forEach(egg => {
+                                egg.style.animation = 'bounce 1s infinite alternate ease-in-out';
+                                setTimeout(() => {
+                                    egg.style.animation = '';
+                                    setTimeout(() => {
+                                        egg.style.animation = 'bounce 5s infinite alternate ease-in-out';
+                                    }, 100);
+                                }, 5000);
+                            });
+                        }
+                    }, 1000);
+                    
+                    isTimerRunning = true;
+                    startButton.querySelector('img').src = '/images/img_image_1.png'; // Could change to PAUSE if you have that image
+                }
+            }
+            
+            startButton.addEventListener('click', startTimer);
+            
+            // Add some interactivity to the eggs
+            const eggs = document.querySelectorAll('.fried-egg');
+            eggs.forEach(egg => {
+                egg.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.2) rotate(20deg)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 500);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

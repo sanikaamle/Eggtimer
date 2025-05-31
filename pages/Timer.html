@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Egg Timer - Countdown</title>
+    <link href='https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap' rel='stylesheet'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #ffffff;
+            font-family: 'Irish Grover', cursive;
+            overflow-x: hidden;
+            position: relative;
+            height: 100vh;
+        }
+        
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            height: 100vh;
+        }
+        
+        .title {
+            position: absolute;
+            top: 37px;
+            left: 28px;
+            font-size: 48px;
+            font-weight: 400;
+            line-height: 59px;
+            text-align: center;
+            color: #000000;
+            z-index: 10;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 13px;
+            right: 69px;
+            width: 57px;
+            height: 57px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+        }
+
+        .timer-display {
+            position: absolute;
+            top: 128px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 155px;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 72px;
+            color: #000000;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .sky-background {
+            position: absolute;
+            top: 301px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 56px);
+            max-width: 1390px;
+            height: 704px;
+            background-color: rgba(239, 229, 94, 0.56);
+            overflow: hidden;
+            border-radius: 8px;
+            z-index: 1;
+        }
+
+        .cloud {
+            position: absolute;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .cloud-1 { animation-delay: 0s; }
+        .cloud-2 { animation-delay: 1s; }
+        .cloud-3 { animation-delay: 2s; }
+        .cloud-4 { animation-delay: 0.5s; }
+        .cloud-5 { animation-delay: 1.5s; }
+        .cloud-6 { animation-delay: 2.5s; }
+        .cloud-7 { animation-delay: 3s; }
+        .cloud-8 { animation-delay: 3.5s; }
+
+        .cloud-1 { top: 38px; left: 15px; width: 354px; height: 169px; }
+        .cloud-2 { top: 485px; left: 178px; width: 404px; height: 193px; }
+        .cloud-3 { top: 52px; left: 875px; width: 505px; height: 241px; }
+        .cloud-4 { top: 281px; left: -10px; width: 427px; height: 204px; }
+        .cloud-5 { top: 445px; left: 901px; width: 488px; height: 233px; }
+        .cloud-6 { top: 293px; left: 516px; width: 515px; height: 246px; }
+        .cloud-7 { top: 147px; left: 370px; width: 344px; height: 164px; }
+        .cloud-8 { top: -116px; left: 393px; width: 578px; height: 276px; }
+
+        .egg-decorations img {
+            position: absolute;
+            z-index: 2;
+            animation: floatEgg 8s ease-in-out infinite;
+        }
+
+        @keyframes floatEgg {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .egg-1 { animation-delay: 0s; }
+        .egg-2 { animation-delay: 1.5s; }
+        .egg-3 { animation-delay: 2.5s; }
+        .egg-4 { animation-delay: 0.8s; }
+        .egg-5 { animation-delay: 2s; }
+        .egg-6 { animation-delay: 1.2s; }
+        .egg-small-1 { animation-delay: 0.3s; }
+        .egg-small-2 { animation-delay: 1.8s; }
+
+        .egg-1 { top: 474px; left: 43px; width: 145px; height: 145px; }
+        .egg-2 { top: 547px; right: 33px; width: 227px; height: 227px; }
+        .egg-3 { top: 805px; left: 633px; width: 235px; height: 235px; }
+        .egg-4 { top: 716px; left: 0px; width: 212px; height: 212px; }
+        .egg-5 { top: 304px; right: 76px; width: 97px; height: 97px; }
+        .egg-6 { top: 429px; left: 723px; width: 166px; height: 166px; }
+        .egg-small-1 { top: 134px; right: 79px; width: 45px; height: 45px; }
+        .egg-small-2 { top: 139px; right: 41px; width: 35px; height: 35px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">EGG TIMER</h1>
+        <a href="TimerSelection.html" class="back-button">
+            <img src="../assets/images/back_button.svg" alt="Back">
+        </a>
+        <div class="timer-display" id="timer">00:00</div>
+
+        <div class="sky-background">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-1">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-2">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-3">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-4">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-5">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-6">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-7">
+            <img src="../assets/images/cloud.svg" alt="Cloud" class="cloud cloud-8">
+        </div>
+
+        <div class="egg-decorations">
+            <img src="../assets/images/egg_2.svg" alt="Egg" class="egg-1">
+            <img src="../assets/images/egg_2.svg" alt="Egg" class="egg-2">
+            <img src="../assets/images/egg_2.svg" alt="Egg" class="egg-3">
+            <img src="../assets/images/egg_2.svg" alt="Egg" class="egg-4">
+            <img src="../assets/images/egg_2.svg" alt="Egg" class="egg-5">
+            <img src="../assets/images/egg_2.svg" alt="Egg" class="egg-6">
+            <img src="../assets/images/egg_small.svg" alt="Small Egg" class="egg-small-1">
+            <img src="../assets/images/egg_small.svg" alt="Small Egg" class="egg-small-2">
+        </div>
+    </div>
+
+    <script>
+        // Get the timer duration from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const minutes = parseInt(urlParams.get('time')) || 3;
+        let timeLeft = minutes * 60;
+
+        const timerDisplay = document.getElementById('timer');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            if (timeLeft === 0) {
+                clearInterval(timerInterval);
+                const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+                audio.play();
+                setTimeout(() => {
+                    alert('Timer finished!');
+                    window.location.href = 'TimerSelection.html';
+                }, 1000);
+            } else {
+                timeLeft--;
+            }
+        }
+
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
